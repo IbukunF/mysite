@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+<h3>Creating a Question</h3>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+<form action="{% url 'polls:detail'" method="post">
+    {% csrf token %}
+    <label>Enter Your Question below</label>
+    <input type="text" name = "question_text">
+</form>
+
+</body>
+</html>
