@@ -5,6 +5,7 @@ import datetime
 
 from django.db import models
 from django.utils import timezone
+from django import forms
 
 # Create your models here.
 
@@ -25,3 +26,6 @@ class Choice(models.Model):
 
     def __str__(self):
         return self.choice_text
+
+class QuestionForm(forms.Form):
+    question_text = forms.CharField(label ='Question Text',max_length = 200)

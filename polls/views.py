@@ -5,10 +5,10 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.views import generic
-#from django.forms import
+from django.utils import timezone
 
 
-from .models import Question, Choice
+from .models import Question, Choice, QuestionForm
 
 # Create your views here.
 class IndexView(generic.ListView):
@@ -27,6 +27,8 @@ class ResultsView(generic.DetailView):
     model = Question
     template_name = 'polls/results.html'
 
+
+
 def vote(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     try:
@@ -43,7 +45,25 @@ def vote(request, question_id):
 
 # My Views
 
-#def create(request)
+def create_question(request):
+    if request.method == 'POST':
+        # put request data in form
+        form = QuestionForm(request.POST)
+        # check validity
+        if form.is_valid():
+            print('form is valid')
+            question_text = form.cleaned_data['question_text']
+            pub_date = timezone.now()
+            q = Question(question_text= question_text,pub_date=pub_date)
+            q.save()
+
+            return HttpResponseRedirect(reverse('polls:detail', args=(q.pk,)))
+    else:
+        form = QuestionForm()
+
+    return render(request, 'polls/create.html', {'form':form})
+
+
 
 #def update(request)
 
