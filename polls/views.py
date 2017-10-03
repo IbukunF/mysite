@@ -45,7 +45,7 @@ def vote(request, question_id):
 
 # My Views
 
-def create_question(request):
+def create(request):
     if request.method == 'POST':
         # put request data in form
         form = QuestionForm(request.POST)
