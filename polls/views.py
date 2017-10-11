@@ -51,11 +51,12 @@ def create(request):
         form = QuestionForm(request.POST)
         # check validity
         if form.is_valid():
-            print('form is valid')
             question_text = form.cleaned_data['question_text']
             pub_date = timezone.now()
             q = Question(question_text= question_text,pub_date=pub_date)
             q.save()
+            for text in choice_list(request):
+                q.choice_set.create(choice_text=text)
 
             return HttpResponseRedirect(reverse('polls:detail', args=(q.pk,)))
     else:
@@ -63,31 +64,8 @@ def create(request):
 
     return render(request, 'polls/create.html', {'form':form})
 
-
-
-#def update(request)
-
-#def delete(request)
-
-
-#old code:
-# def index(request):
-#     latest_question_list = Question.objects.order_by('-pub_date')[:5]
-#     context= {
-#         'latest_question_list': latest_question_list,
-#     }
-#     return render(request, 'polls/index.html', context)
-#
-# def detail(request, question_id):
-#     question = get_object_or_404(Question, pk=question_id)
-#     context = {
-#         'question': question,
-#     }
-#     return render(request, 'polls/detail.html', context)
-#
-# def results(request, question_id):
-#     question = get_object_or_404(Question, pk=question_id)
-#     context = {
-#         'question': question,
-#     }
-#     return render(request, 'polls/results.html', context)
+def choice_list(request):
+    print type(request.POST.items())
+    for name, text in request.POST.items():
+        if name.startswith('choice_text'):
+            yield text

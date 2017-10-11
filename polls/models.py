@@ -12,6 +12,7 @@ from django import forms
 class Question(models.Model):
     question_text = models.CharField(max_length=200)
     pub_date = models.DateTimeField('date published')
+    choices=models.ManyToManyField("Choice", related_name = "choices")
 
     def __str__(self):
         return self.question_text

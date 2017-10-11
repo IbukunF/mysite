@@ -24,11 +24,35 @@
     {% endfor %}
 {% endif %}
 
-<form action="" method="post">
+<form id="form1" method="post">
     {% csrf_token %}
-    {{ form }}
+    {{ form.as_p }}
+    <button id="btn1" onclick="create_choice()">Add Choice</button>
     <input type="submit" value="Submit"/>
 </form>
+
+<script>
+    var i = 4;
+    function create_choice() {
+        var par = document.createElement("p");
+        var lbl = document.createElement("LABEL");
+        var txt = document.createTextNode("Choice text: ");
+        lbl.appendChild(txt);
+        par.appendChild(lbl);
+        var input = document.createElement("input");
+        input.type = "text";
+        input.name = "choice_text_" + i;
+        input.required = true;
+        input.maxlength = "200";
+        input.id =  "id_choice_text_" + i;
+        par.appendChild(input);
+        var f = document.getElementById("form1");
+        var s = document.getElementById("btn1");
+        console.log(s);
+        f.insertBefore(par, s);
+        i += 1;
+        }
+</script>
 
 </body>
 </html>
